@@ -1,12 +1,22 @@
 <template>
   <div>
-    <pre>{{ openSky }}</pre>
     <button @click="direction">Arrivées ↘️</button>
     <button @click="direction = false">Départs ↗️</button>
-    <input class="btn-date" type="text" v-model="begin" />
-    <input class="btn-date" type="text" v-model="end" />
-    <input class="btn-airport" type="text" v-model="airport" />
+    <input class="btn-date" type="date" v-model="begin" />
+    <input class="btn-date" type="date" v-model="end" />
+    <input class="btn-airport" list="airports" v-model="airport" />
+    <datalist id="airports">
+      <option
+        v-for="(airport, index) in allAirports"
+        :key="index"
+        :value="airport.iata"
+      >
+        {{ airport.name }}
+      </option>
+    </datalist>
+
     <button @click="getFlightByDateAndAirport()">Vols ✈️</button>
+    <pre>{{ openSky }}</pre>
   </div>
 </template>
 
@@ -22,25 +32,32 @@ export default {
   data() {
     return {
       openSky: null,
-      direction: true,  //* true = arrival, false = departure
+      direction: true, //* true = arrival, false = departure
       airport: "LFPG",
-      begin: "1641339245",
-      end: "1641425645",
+      begin: "",
+      end: "",
+      allAirports: [{ iata: "CDG", name: "Paris, Charles de Gaulle" }],
     };
   },
   mounted() {},
   methods: {
-    getFlightByDateAndAirport() {
+    async getIcao(iata) {
+      const axios = require("axios");
+      let res = await axios
+        .get(`https://api.joshdouch.me/IATA-ICAO.php?iata=${iata}`)
+        return res.data
+      
+    },
+    async getFlightByDateAndAirport() {
+      let iaco = await this.getIcao(this.airport)
       const axios = require("axios");
       axios
         .get(
-          `https://opensky-network.org/api/flights/${this.direction ? "arrival" : "departure"}?airport=${this.airport}&begin=${this.begin}&end=${this.end}`
-        )
+          `https://opensky-network.org/api/flights/${this.direction ? "arrival" : "departure"}?airport=${iaco}&begin=${Date.parse(this.begin) / 1000}&end=${Date.parse(this.end) / 1000}`)
         .then((response) => (this.openSky = response));
     },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>
