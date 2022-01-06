@@ -2,12 +2,12 @@
   <div class="card-airport">
     <div class="wrapper">
       <div>
-        <p class="big-text">JFK</p>
+        <p class="big-text">{{departAirport}}</p>
         <p class="small-text">New York, John F. Kennedy International</p>
       </div>
       <img class="plane" src="@/assets/plane.gif" alt="icon avion" />
       <div class="right">
-        <p class="big-text">CDG</p>
+        <p class="big-text">{{arrivalAirport}}</p>
         <p class="small-text">Paris, Charles de Gaulle</p>
       </div>
     </div>
@@ -31,7 +31,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props:["departAirport", "arrivalAirport", "icao24"],
+  methods: {
+    async getIata(icao) {
+      const axios = require("axios");
+      let res = await axios.get(
+        `https://api.joshdouch.me/ICAO-IATA.php?icao=${icao}`
+      );
+      return res.data;
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -61,7 +72,7 @@ p {
 }
 
 .separator {
-  background-color:rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.25);
   width: 100%;
   height: 1px;
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button @click="direction">Arrivées ↘️</button>
-    <button @click="direction = false">Départs ↗️</button>
+    <button :style="direction ? 'background-color: red' : 'background-color: transparent'" @click="direction = true">Arrivées ↘️</button>
+    <button :style="direction ? 'background-color: transparent' : 'background-color: red'" @click="direction = false">Départs ↗️</button>
     <input class="btn-date" type="date" v-model="begin" />
     <input class="btn-date" type="date" v-model="end" />
     <input class="btn-airport" list="airports" v-model="airport" />
@@ -19,7 +19,7 @@
 
     <!-- <p>{{openSky}}</p> -->
 
-    <FlyCard v-for="(airport, index) in openSky" :key="index"/>
+    <FlyCard :departAirport="airport.estDepartureAirport" :arrivalAirport="airport.estArrivalAirport" :icao24="airport.icao24" v-for="(airport, index) in openSky" :key="index"/>
   </div>
 </template>
 
