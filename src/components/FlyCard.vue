@@ -17,7 +17,7 @@
     <div class="wrapper">
       <div>
         <p class="small-text">Départ</p>
-        <p class="big-text">01:54</p>
+        <p class="big-text">{{departTime}}</p>
       </div>
       <img
         :onerror="isError()"
@@ -28,7 +28,7 @@
       <!-- <p>{{urlLogo}}</p> -->
       <div class="right">
         <p class="small-text">Arrivé</p>
-        <p class="big-text">10:23</p>
+        <p class="big-text">{{arrivalTime}}</p>
       </div>
     </div>
   </div>
@@ -51,7 +51,7 @@ export default {
       cityArrival: "",
     };
   },
-  props: ["departAirport", "arrivalAirport", "icao24"],
+  props: ["departAirport", "arrivalAirport", "icao24", "departTime", "arrivalTime"],
   mounted() {
     const depart = require("axios");
     depart
