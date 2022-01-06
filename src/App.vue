@@ -1,21 +1,29 @@
 <template>
   <div>
-    <button :style="direction ? 'background-color: red' : 'background-color: transparent'" @click="direction = true">Arrivées ↘️</button>
-    <button :style="direction ? 'background-color: transparent' : 'background-color: red'" @click="direction = false">Départs ↗️</button>
-    <input class="btn-date" type="date" v-model="begin" />
-    <input class="btn-date" type="date" v-model="end" />
-    <input class="btn-airport" list="airports" v-model="airport" />
-    <datalist id="airports">
-      <option
-        v-for="(airport, index) in allAirports"
-        :key="index"
-        :value="airport.iata"
-      >
-        {{ airport.name }}
-      </option>
-    </datalist>
+    <div class="btn-wrapper">
+      <button class="btn" @click="direction = false">Départs ↗️</button>
+      <button class="btn" @click="direction">Arrivées ↘️</button>
+    </div>
+    <div class="btn-wrapper">
+      <input class="btn" type="date" v-model="begin" />
+      <input class="btn" type="date" v-model="end" />
+    </div>
+    <div class="btn-wrapper">
+      <input class="btn" list="airports" v-model="airport" />
+      <datalist id="airports">
+        <option
+          v-for="(airport, index) in allAirports"
+          :key="index"
+          :value="airport.iata"
+        >
+          {{ airport.name }}
+        </option>
+      </datalist>
 
-    <button @click="getFlightByDateAndAirport()">Vols ✈️</button>
+      <button @click="getFlightByDateAndAirport()">
+        Rechercher un vols ✈️
+      </button>
+    </div>
 
     <!-- <p>{{openSky}}</p> -->
 
@@ -76,7 +84,12 @@ export default {
       const axios = require("axios");
       axios
         .get(
-          `https://opensky-network.org/api/flights/${this.direction ? "arrival" : "departure"}?airport=${iaco}&begin=${Date.parse(this.begin) / 1000}&end=${Date.parse(this.end) / 1000}`)
+          `https://opensky-network.org/api/flights/${
+            this.direction ? "arrival" : "departure"
+          }?airport=${iaco}&begin=${Date.parse(this.begin) / 1000}&end=${
+            Date.parse(this.end) / 1000
+          }`
+        )
         .then((response) => (this.openSky = response.data));
     },
   },
@@ -97,5 +110,22 @@ body {
 
 .card-airport:not(:last-child) {
   margin-bottom: 5.797vw;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5.797vw;
+}
+
+.btn-wrapper:last-child {
+  margin-bottom: 8.696vw;
+}
+
+.btn {
+  width: 38.406vw;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 </style>
