@@ -33,10 +33,21 @@ export default {
     return {
       openSky: null,
       direction: true, //* true = arrival, false = departure
-      airport: "LFPG",
+      airport: "",
       begin: "",
       end: "",
-      allAirports: [{ iata: "CDG", name: "Paris, Charles de Gaulle" }],
+      allAirports: [
+      { iata: "CDG", name: "Paris, Charles de Gaulle" }, 
+      { iata: "LIL", name: "Lille, Lesquin" }, 
+      { iata: "ORY", name: "Paris, Orly" }, 
+      { iata: "NCE", name: "Nice, Côte d'Azur" }, 
+      { iata: "LYS", name: "Lyon, Saint-Exupéry" }, 
+      { iata: "MRS", name: "Marseille, Provence" }, 
+      { iata: "TLS", name: "Toulouse, Blagnac" }, 
+      { iata: "BOD", name: "Bordeaux, Mérignac" }, 
+      { iata: "NTE", name: "Nantes, Atlantique" }, 
+      { iata: "PTP", name: "Guadeloupe, Pôle Caraïbes" }, 
+      ],
     };
   },
   mounted() {},
