@@ -17,7 +17,9 @@
 
     <button @click="getFlightByDateAndAirport()">Vols ✈️</button>
 
-    <FlyCard />
+    <!-- <p>{{openSky}}</p> -->
+
+    <FlyCard v-for="(airport, index) in openSky" :key="index"/>
   </div>
 </template>
 
@@ -75,7 +77,7 @@ export default {
       axios
         .get(
           `https://opensky-network.org/api/flights/${this.direction ? "arrival" : "departure"}?airport=${iaco}&begin=${Date.parse(this.begin) / 1000}&end=${Date.parse(this.end) / 1000}`)
-        .then((response) => (this.openSky = response));
+        .then((response) => (this.openSky = response.data));
     },
   },
 };
