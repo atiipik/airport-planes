@@ -11,12 +11,17 @@
         <p class="small-text">Paris, Charles de Gaulle</p>
       </div>
     </div>
-    <img class="logo-compagny" src="https://api.joshdouch.me/logos/ABR.bmp" alt="logo compagnie" />
+    <div class="separator"></div>
     <div class="wrapper">
       <div>
         <p class="small-text">Départ</p>
         <p class="big-text">01:54</p>
       </div>
+      <img
+        class="logo-compagny"
+        src="https://api.joshdouch.me/logos/ABR.bmp"
+        alt="logo compagnie"
+      />
       <div class="right">
         <p class="small-text">Arrivé</p>
         <p class="big-text">10:23</p>
@@ -49,6 +54,16 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.card-airport div:nth-child(3) {
+  align-items: center;
+}
+
+.separator {
+  background-color:rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 1px;
 }
 
 .right {
