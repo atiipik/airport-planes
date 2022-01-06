@@ -2,12 +2,14 @@
   <div class="card-airport">
     <div class="wrapper">
       <div>
-        <p class="big-text">{{ departAirporta }}</p>
+        <p class="big-text">{{ iataDepart }}</p>
         <p class="small-text">{{ cityDepart }}</p>
       </div>
-      <img class="plane" src="@/assets/plane.gif" alt="icon avion" />
+      <div>
+        <img class="plane" src="@/assets/plane.gif" alt="icon avion" />
+      </div>
       <div class="right">
-        <p class="big-text">{{ arrivalAirport }}</p>
+        <p class="big-text">{{ iataArrival }}</p>
         <p class="small-text">{{ cityArrival }}</p>
       </div>
     </div>
@@ -18,10 +20,12 @@
         <p class="big-text">01:54</p>
       </div>
       <img
+        :onerror="isError()"
         class="logo-compagny"
-        src="https://api.joshdouch.me/logos/ABR.bmp"
+        :src="urlLogo"
         alt="logo compagnie"
       />
+      <!-- <p>{{urlLogo}}</p> -->
       <div class="right">
         <p class="small-text">Arrivé</p>
         <p class="big-text">10:23</p>
@@ -34,8 +38,13 @@
 export default {
   data() {
     return {
+      imgError: false,
       departAirporta: this.departAirport,
       arrivalAirporta: this.arrivalAirport,
+      icao24hex: this.icao24,
+      urlLogo: "",
+      iataDepart: "",
+      iataArrival: "",
       IataDepart: "",
       IataArrival: "",
       cityDepart: "",
@@ -43,15 +52,6 @@ export default {
     };
   },
   props: ["departAirport", "arrivalAirport", "icao24"],
-  methods: {
-    async getIata(icao) {
-      const axios = require("axios");
-      let res = await axios.get(
-        `https://api.joshdouch.me/ICAO-IATA.php?icao=${icao}`
-      );
-      return res.data;
-    },
-  },
   mounted() {
     const depart = require("axios");
     depart
@@ -66,6 +66,28 @@ export default {
         `https://api.joshdouch.me/ICAO-airport.php?icao=${this.arrivalAirporta}`
       )
       .then((response) => (this.cityArrival = response.data));
+
+    const compagny = require("axios");
+    compagny
+      .get(`https://api.joshdouch.me/hex-logo.php?hex=${this.icao24hex}`)
+      .then((response) => (this.urlLogo = response.data));
+
+    const iataDepart = require("axios");
+    iataDepart
+      .get(`https://api.joshdouch.me/ICAO-IATA.php?icao=${this.departAirporta}`)
+      .then((response) => (this.iataDepart = response.data));
+
+    const iataArrival = require("axios");
+    iataArrival
+      .get(
+        `https://api.joshdouch.me/ICAO-IATA.php?icao=${this.arrivalAirporta}`
+      )
+      .then((response) => (this.iataArrival = response.data));
+  },
+  methods: {
+    isError() {
+      console.log("il y a erreur monsieur");
+    },
   },
 };
 </script>
@@ -90,6 +112,16 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.wrapper > div {
+  width: calc(100% / 3);
+}
+
+.wrapper > div:nth-child(2) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-airport div:nth-child(3) {
