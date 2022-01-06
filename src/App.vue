@@ -16,17 +16,18 @@
     </datalist>
 
     <button @click="getFlightByDateAndAirport()">Vols ✈️</button>
-    <pre>{{ openSky }}</pre>
+
+    <FlyCard />
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+import FlyCard from "./components/FlyCard.vue";
 
 export default {
   name: "App",
   components: {
-    // HelloWorld
+    FlyCard,
   },
 
   data() {
@@ -80,4 +81,15 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+html {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(240, 233, 233);
+  padding: 5.797vw 4.348vw;
+}
+</style>
