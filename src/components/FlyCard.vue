@@ -2,13 +2,13 @@
   <div class="card-airport">
     <div class="wrapper">
       <div>
-        <p class="big-text">{{departAirport}}</p>
-        <p class="small-text">New York, John F. Kennedy International</p>
+        <p class="big-text">{{ departAirporta }}</p>
+        <p class="small-text">{{ cityDepart }}</p>
       </div>
       <img class="plane" src="@/assets/plane.gif" alt="icon avion" />
       <div class="right">
-        <p class="big-text">{{arrivalAirport}}</p>
-        <p class="small-text">Paris, Charles de Gaulle</p>
+        <p class="big-text">{{ arrivalAirport }}</p>
+        <p class="small-text">{{ cityArrival }}</p>
       </div>
     </div>
     <div class="separator"></div>
@@ -32,7 +32,17 @@
 
 <script>
 export default {
-  props:["departAirport", "arrivalAirport", "icao24"],
+  data() {
+    return {
+      departAirporta: this.departAirport,
+      arrivalAirporta: this.arrivalAirport,
+      IataDepart: "",
+      IataArrival: "",
+      cityDepart: "",
+      cityArrival: "",
+    };
+  },
+  props: ["departAirport", "arrivalAirport", "icao24"],
   methods: {
     async getIata(icao) {
       const axios = require("axios");
@@ -41,6 +51,21 @@ export default {
       );
       return res.data;
     },
+  },
+  mounted() {
+    const depart = require("axios");
+    depart
+      .get(
+        `https://api.joshdouch.me/ICAO-airport.php?icao=${this.departAirporta}`
+      )
+      .then((response) => (this.cityDepart = response.data));
+
+    const arrival = require("axios");
+    arrival
+      .get(
+        `https://api.joshdouch.me/ICAO-airport.php?icao=${this.arrivalAirporta}`
+      )
+      .then((response) => (this.cityArrival = response.data));
   },
 };
 </script>
