@@ -28,7 +28,7 @@
     </div>
 
 
-    <FlyCard :departTime="airport.firstSeen" :arrivalTime="airport.firstSeen" :departAirport="airport.estDepartureAirport" :arrivalAirport="airport.estArrivalAirport" :icao24="airport.icao24" v-for="(airport, index) in openSky" :key="index"/>
+    <FlyCard :departTime="airport.firstSeen" :arrivalTime="airport.lastSeen" :departAirport="airport.estDepartureAirport" :arrivalAirport="airport.estArrivalAirport" :icao24="airport.icao24" v-for="(airport, index) in openSky" :key="index"/>
   </div>
 </template>
 

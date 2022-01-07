@@ -6,6 +6,7 @@
         <p class="small-text">{{ cityDepart }}</p>
       </div>
       <div>
+        <p class="small-text">{{new Date(departTime * 1000).getDay()}}/{{new Date(departTime * 1000).getMonth() + 1}}/{{new Date(departTime * 1000).getFullYear()}}</p>
         <img class="plane" src="@/assets/plane.gif" alt="icon avion" />
       </div>
       <div class="right">
@@ -17,9 +18,16 @@
     <div class="wrapper">
       <div>
         <p class="small-text">Départ</p>
-        <p class="big-text">{{departTime}}</p>
+        <p class="big-text">
+          {{ new Date(departTime * 1000).getHours() }}:{{
+            ("0" + new Date(departTime * 1000).getMinutes().toString()).slice(
+              -2
+            )
+          }}
+        </p>
       </div>
       <img
+        v-if="urlLogo != 'n/a'"
         :onerror="isError()"
         class="logo-compagny"
         :src="urlLogo"
@@ -28,7 +36,13 @@
       <!-- <p>{{urlLogo}}</p> -->
       <div class="right">
         <p class="small-text">Arrivé</p>
-        <p class="big-text">{{arrivalTime}}</p>
+        <p class="big-text">
+          {{ new Date(arrivalTime * 1000).getHours() }}:{{
+            ("0" + new Date(arrivalTime * 1000).getMinutes().toString()).slice(
+              -2
+            )
+          }}
+        </p>
       </div>
     </div>
   </div>
@@ -51,7 +65,13 @@ export default {
       cityArrival: "",
     };
   },
-  props: ["departAirport", "arrivalAirport", "icao24", "departTime", "arrivalTime"],
+  props: [
+    "departAirport",
+    "arrivalAirport",
+    "icao24",
+    "departTime",
+    "arrivalTime",
+  ],
   mounted() {
     const depart = require("axios");
     depart
@@ -114,18 +134,20 @@ p {
   align-items: flex-start;
 }
 
-.wrapper > div {
+.wrapper:last-child {
+  align-items: center;
+}
+
+.wrapper:first-child > div {
   width: calc(100% / 3);
+  display: flex;
+  flex-direction: column;
 }
 
 .wrapper > div:nth-child(2) {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.card-airport div:nth-child(3) {
-  align-items: center;
 }
 
 .separator {
@@ -135,6 +157,10 @@ p {
 }
 
 .right {
+  align-items: flex-end;
+}
+
+.right p {
   text-align: right;
 }
 
